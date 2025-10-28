@@ -1,3 +1,9 @@
+if (isPrivate && !userId) {
+  if (!["/index.html", "/", ""].includes(currentPage)) {
+    console.warn("Redirigiendo al inicio por falta de sesión...");
+    window.location.replace("/index.html");
+  }
+}
 document.addEventListener("DOMContentLoaded",()=>{
   const isPrivate=document.body.getAttribute("data-private")==="true";
   const rawUserId=localStorage.getItem("userId");
