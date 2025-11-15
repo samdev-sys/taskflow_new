@@ -1,21 +1,19 @@
-if (isPrivate && !userId) {
-  if (!["/index.html", "/", ""].includes(currentPage)) {
-    console.warn("Redirigiendo al inicio por falta de sesión...");
-    window.location.replace("/index.html");
-  }
-}
+
 document.addEventListener("DOMContentLoaded",()=>{
   const isPrivate=document.body.getAttribute("data-private")==="true";
   const rawUserId=localStorage.getItem("userId");
   const userId=rawUserId && !isNaN(parseInt(rawUserId))?parseInt(rawUserId):null;
-
-
   const currentPage =window.location.pathname;
+  if(isPrivate&&!userId){
+    if(currentPage !=="/index.html" && currentPage !=="/"){
+      console.warn("Usuario no autenticado, redirigiendo a login");
+      window.location.replace("/index.html");
+      return
+    }
+  }
   if (isPrivate){
     if (!userId || isNaN(userId)){
-      if (currentPage !=="/index.html" && currentPage !=="/"){
-        window.location.replace("/index.html");
-      }
+      
       return;
 
     }else{
@@ -23,6 +21,7 @@ document.addEventListener("DOMContentLoaded",()=>{
       displayUrls(userId);
     }
   }
+  });
 
   
   
@@ -91,7 +90,7 @@ document.addEventListener("DOMContentLoaded",()=>{
       window.location.replace("/index.html");
     });
   }
-  })
+  
 
 // 🧠 Verificación extra al volver atrás
 window.addEventListener("pageshow", (event) => {
