@@ -1,26 +1,45 @@
 const mysql = require('mysql2');
-const fs = require('fs');
-const path = require('path');
+const { Result } = require('pg');
 
-const db = mysql.createConnection({
-  host: process.env.MYSQLHOST,
-  port: process.env.MYSQLPORT,
-  user: process.env.MYSQLUSER,
-  password: process.env.MYSQLPASSWORD,
-  database: process.env.MYSQLDATABASE,
-  ssl:{
-    ca:process.env.MYSQL_CA_CERT,
-    rejectUnauthorized: false
+const conexion = mysql.createConnection({
+  host: 'localhost',
+  user: 'root',
+  password: '',
+  database: '001_app'
+});
+const findUser = (user, callback) => {
+  const query = 'SELECT * FROM users WHERE usuario=?';
+  console.log("Ejecutando consulta SQL para:", user);
+  conexion.query(query, [user], (error, results) => {
+    if (error) {
+      console. error ("error en la query", error)
+      return callback(error, null);
+      
+    }
+    console.log("Resultados de la BD:", results); // Log vital
+    
+    if (results && results.length >0){
+      callback (null, results[0]);
+    }else{
+      callback(null, null);
+    }
+  });
+}
+
+const createUser = (userData, callback) => {
+  const query = 'INSERT INTO users (nombre, usuario, email, password) VALUES (?, ?, ?, ?)';
+  conexion.query(query, [data.nombre, data.usuario, data.email, data.password], (error, results) => {
+    callback(error, results);
+  });
+}
+conexion.connect(error => {
+  if (error) {
+    console.error('❌ Error de conexión:', error);
+    return;
+
   }
 });
+console.log('🟢 Conectado a MySQL');
 
-db.connect(err => {
-  if (err) {
-    console.error('❌ Error de conexión:', err);
-  } else {
-    console.log('✅ Conectado a MySQL en aiven');
-  }
-});
-console.log('📦 Base de datos seleccionada:', process.env.MYSQLDATABASE);
+module.exports = { conexion, findUser, createUser };
 
-module.exports = db;

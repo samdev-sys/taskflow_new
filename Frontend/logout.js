@@ -1,3 +1,5 @@
+
+
 document.addEventListener('DOMContentLoaded', function () {
     // console.log("Archivo login.js activo y listo");
 
@@ -19,7 +21,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Evento de clic para cerrar sesión
-    var cerrarSesionBtn = document.querySelector(".btn.green");
+    var cerrarSesionBtn = document.querySelector(".btn.green.cerrar-sesion-confirmar");
     if (cerrarSesionBtn) {
         cerrarSesionBtn.addEventListener("click", cerrarSesion);
     }
@@ -53,20 +55,35 @@ function cerrarModal() {
     }
 }
 
-// Función para cerrar sesión
+//Función para cerrar sesión
 function cerrarSesion() {
+    cerrarModal();
     console.log("Cerrando sesión...");
-    alert('Sesión cerrada exitosamente.');
-    window.location.href = '/index.html';
-}
 
-// Función corregida para generar contraseña
-async function genPass() {
-    try {
-        const response = await fetch("https://opulent-eureka-5gr97xp5qqxp255v-8501.app.github.dev/");
-        const data = await response.json(); // Se define data antes de usarla
-        console.log("Contraseña generada:", data.password);
-    } catch (error) {
-        console.error("Error al obtener la contraseña:", error);
-    }
+    fetch('/logout', {
+        method: 'POST'
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                localStorage.removeItem('userId');
+                localStorage.removeItem('username');
+
+
+                alert(data.message);
+
+                window.location.replace("index.html");
+            } else {
+                console.error("error al iniciar sesion", data.message);
+                alert('Advertencia: No se pudo confirmar el cierre de sesión en el servidor. Redirigiendo...');
+                window.location.replace("index.html");
+            }
+        })
+        .catch(error => {
+            console.error("Error de red al intentar cerrar sesión:", error);
+            alert('Error de conexión al cerrar sesión. Intente de nuevo.');
+            // En caso de fallo de red, es crucial borrar el estado local y redirigir.
+            localStorage.removeItem('userId');
+            window.location.replace("index.html");
+        })
 }

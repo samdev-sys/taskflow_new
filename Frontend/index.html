@@ -1,136 +1,257 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   
-    <link rel="shortcut icon" href="./img/ChatGPT Image 22 may 2025, 08_43_12 p.m_logo..png" type="image/x-icon"> 
-    <!-- Materialize CSS -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" rel="stylesheet">
 
-<!-- Íconos de Google (opcional, pero recomendado) -->
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-<link rel="stylesheet" href="./styles.css">
+    <link rel="shortcut icon" href="./img/ChatGPT Image 22 may 2025, 08_43_12 p.m_logo..png" type="image/x-icon">
 
-    <title>Welcome!/добро пожаловать/Bienvenid(a)</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="./styles.css">
+
+    <title>Welcome!</title>
     <style>
-    body {
-      background-image: url('./img/3222.png');
-      background-repeat: no-repeat;
-      background-size: cover;
-      font-family: sans-serif;
-      background-attachment: fixed;
-    }
+        body {
+            background-image: url('./img/3222.png');
+            background-repeat: no-repeat;
+            background-size: cover;
+            font-family: sans-serif;
+            background-attachment: fixed;
+        }
 
-        
+        /* Estilos para asegurar que el contenido del modal sea blanco sobre el fondo oscuro */
+        .modal-content.white-text .input-field input:focus+label {
+            color: #4db6ac !important;
+            /* Teal claro para el label en focus */
+        }
+
+        .modal-content.white-text .input-field input:focus {
+            border-bottom: 1px solid #4db6ac !important;
+            /* Teal claro para la línea en focus */
+            box-shadow: 0 1px 0 0 #4db6ac !important;
+        }
+
+        .modal-content.white-text .input-field input[type=email].validate:not(.browser-default),
+        .modal-content.white-text .input-field input[type=password].validate:not(.browser-default) {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.7);
+            /* Línea por defecto más clara */
+        }
+
+        .modal-content.white-text .input-field i.material-icons {
+            color: rgba(255, 255, 255, 0.7);
+            /* Color de los iconos prefix/suffix */
+        }
+
+        /* Estilo para el caption del slider para mejorar legibilidad */
+        .slider .caption {
+            background-color: rgba(0, 0, 0, 0.4);
+            padding: 20px 0;
+        }
     </style>
 </head>
-<body data-private="false"> 
-  <header>
-    <nav class="blue darken-1">
-<div class="nav-wrapper">
-        <a class="waves-effect waves-light btn modal-trigger  indigo darken-2" href="#modal1">Iniciar</a>
-      <div id="modal1" class="modal" style="background-color: rgb(7, 51, 51); border: 2px solid azure; border-radius: 8px;">
-    <div class="modal-content">
-      <div class="container" >
-<div class="row">
-  <form class="col s12" id="loginForm">
-    <div class="form">      
-      <div class="row">
-        <h1>Iniciar Sesión</h1>
-        <div class="input-field col s6">
-          <input placeholder="Usuario" id="usernameLog" type="text" class="validate">
-          <label for="usernameLog">Usuario</label>
+
+<body data-private="false">
+
+    <body data-private="false">
+        <header>
+            <nav class="blue darken-1">
+                <div class="nav-wrapper container"> <a href="#" class="brand-logo center">taskFlow</a>
+
+                    <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+
+                    <ul class="right hide-on-med-and-down">
+                        <li><a href="#modal1"
+                                class="waves-effect waves-light btn modal-trigger indigo darken-2">Iniciar</a></li>
+                        <li><a href="./Register.html">Registrarse</a></li>
+                        <li><a href="./Contacto.html">Contacto</a></li>
+                    </ul>
+                </div>
+            </nav>
+
+            <ul class="sidenav" id="mobile-demo">
+                <li>
+                    <div class="user-view">
+                        <div class="background" style="background-color: rgb(236, 245, 244);">
+                            <img src="./img/ChatGPT Image 22 may 2025, 08_43_12 p.m_logo..png" alt="Fondo de menú"
+                                style="width: 25%;">
+                        </div>
+                        <br>
+                        <br>
+
+                    </div>
+                </li>
+                <div style="background-color: rgb(94, 147, 129);">
+                    <li><a href="#modal1" class="modal-trigger"><i class="material-icons"
+                                style="color: aqua;">person_pin</i>Iniciar Sesión</a></li>
+                    <li><a href="./Register.html"><i class="material-icons"
+                                style="color: blue;">person_add</i>Registrarse</a></li>
+                    <li>
+                        <div class="divider"></div>
+                    </li>
+                    <li><a href="./Contacto.html"><i class="material-icons"
+                                style="color: black;">contact_mail</i>Contacto</a></li>
+                </div>
+
+            </ul>
+
+
+            <div id="modal1" class="modal"
+                style="background-color: rgb(7, 51, 51); border: 2px solid azure; border-radius: 8px;">
+                <div class="modal-content white-text">
+                    <div class="center-align">
+                        <div style="display: flex; justify-content: center; align-items: center; margin-bottom: 1rem;">
+                            <i class="material-icons large indigo-text text-lighten-2"
+                                style="font-size: 32px;">check_circle</i>
+                            <span style="font-size: 24px; font-weight: 500; color: #E0E0E0;">taskFlow</span>
+                        </div>
+
+                        <h4 style="font-weight: 500; margin-top: 0; margin-bottom: 0.5rem;">Iniciar Sesión</h4>
+                        <p class="grey-text text-lighten-3" style="margin-bottom: 2rem;">Continúa para acceder a tu
+                            cuenta</p>
+                    </div>
+
+                    <form class="col s12" id="loginForm">
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <i class="material-icons prefix">account_circle</i>
+                                <input id="usernameLog" type="text" class="validate white-text">
+                                <label for="usernameLog" class="white-text">User</label>
+                            </div>
+
+                            <div class="input-field col s12">
+                                <i class="material-icons prefix">lock</i>
+                                <input id="passwordLog" type="password" class="validate white-text"
+                                    autocomplete="current-password">
+                                <label for="passwordLog" class="white-text">Contraseña</label>
+                                <i class="material-icons suffix toggle-password"
+                                    style="cursor: pointer;">visibility_off</i>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col s12 right-align" style="margin-top: -15px;">
+                                <a href="./recupera.html" class="teal-text text-lighten-2"
+                                    style="font-size: 0.875rem; font-weight: 500;">¿Olvidaste tu contraseña?</a>
+                            </div>
+                        </div>
+
+                        <button id="btn_inicioSesion"
+                            class="btn btn-large waves-effect waves-light indigo darken-2 z-depth-1" type="submit"
+                            style="width: 100%; margin-top: 1.5rem; border-radius: 8px;">
+                            Iniciar
+                        </button>
+
+                        <div class="center-align" style="margin-top: 1.5rem;">
+                            <p class="grey-text text-lighten-3" style="font-size: 0.875rem;">
+                                ¿No tienes una cuenta? <a href="./Register.html"
+                                    class="teal-text text-lighten-2">Registrarse</a>
+                            </p>
+                        </div>
+
+                    </form>
+                </div>
+
+
+
+            </div>
+        </header>
+
+        <div class="slider">
+            <ul class="slides">
+                <li>
+                    <img src="/img/55448.png">
+                    <div class="caption center-align">
+                        <h3 class="white-text">
+                            <p>LA OPTIMIZACION DE SUS PROYECTOS HA LLEGADO</p>
+                        </h3>
+                        <h5 class="light white-text">con **taskFlow**</h5>
+                    </div>
+                </li>
+                <li>
+                    <img src="./img/ChatGPT Image 22 may 2025, 08_29_43 p.m._texto.png .png">
+
+                </li>
+                <li>
+                    <img src="./img/WhatsApp Image 2025-05-08 at 6.23.45 PM (2).jpeg">
+                    <div class="caption right-align">
+                        <h3 class="white-text">
+                            <p>Obtenga una cuenta gratis para comprobar la potencia de taskFlow</p>
+                        </h3>
+                        <h5 class="light white-text">
+                            <a href="./Register.html" class="btn-small waves-effect waves-light teal lighten-1">¡Haga
+                                clic aquí!</a>
+                        </h5>
+                    </div>
+                </li>
+            </ul>
         </div>
-      </div>
+        <main class="principal">
+            <div class="container">
+                <div class="row">
+                    <div class="col s12 m8">
+                        <div class="card-panel teal">
+                            <span class="white-text">Con taskFlow sus proyectos y tareas tendran una eficiencia del 70%,
+                                gracias a la integracion de herramientas de IA y python. ¡Compruebelo!
+                            </span>
+                            <a href="./Register.html" class="btn waves-effect waves-light"
+                                style="color:aliceblue;">REGISTRARSE</a>
 
-      <div class="row">
-        <div class="input-field col s12">
-          <input id="passwordLog" type="password" class="validate" placeholder="Contraseña" autocomplete="current-password">
-          <label for="passwordLog">Contraseña</label>
-        </div>
-      </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
 
-      <div>
-        <a href="./recupera.html">¿Ha olvidado su contraseña?</a>
-      </div>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 
-      <button id="btn_inicioSesion" class="btn waves-effect waves-light blue darken-1" type="submit" style="border-radius: 8px;">Iniciar
-      </button>
-    </div>  
-  </form>
- 
-</div>
-</div> 
-</div>
-   
-  </div>
-          
-    </div>
-    </nav>
-  </header>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                // Inicialización de Materialize Components
+                M.Slider.init(document.querySelectorAll('.slider'), {
+                    height: 400, // Altura del slider
+                    indicators: true,
+                    interval: 6000
+                });
+                M.Modal.init(document.querySelectorAll('.modal'), {});
+                M.Sidenav.init(document.querySelectorAll('.sidenav'), {}); // Inicializa el Sidenav
 
-    <div class="slider">
-    <ul class="slides">
-      <li>
-        <img src="./img/55448.png"> <!-- random image -->
-        <div class="caption center-align">
-          <h3><p>LA  OPTIMIZACION A SUS PROYECTOS A LLEGADO</p></h3>
-          <h5 class="light grey-text text-lighten-3">con taskFlow</h5>
-        </div>
-      </li>
-      <li>
-        <img src="./img/ChatGPT Image 22 may 2025, 08_29_43 p.m._texto.png .png"> <!-- random image -->
-        <div class="caption left-align">
-        </div>
-      </li>
-      <li>
-        <img src="./img/WhatsApp Image 2025-05-08 at 6.23.45 PM (2).jpeg"> <!-- random image -->
-        <div class="caption right-align">
-          <h3><p>Obtenga una cuenta gratis para comprobar la potencia de taskFlow</p></h3>
-          <h5 class="light grey-text text-lighten-3"><a href="./Register.html"style="color: azure; font-family:roboto;">Haga clic en este enlace</a></h5>
-        </div>
-      </li>
-      
-    </ul>
-  </div>
-   
-<main class="principal">
-<div class="container">
-  <div class="row">
-    <div class="col s12 m8">
-      <div class="card-panel teal">
-        <span class="white-text">Con taskFlow sus  proyectos y tareas tendran una eficiencia del 70%,gracias a la integracion de herramientas de IA y python.compruebelo!!
-        </span>
-        <a href="./Register.html" class="btn waves-effect waves-light" style="color:aliceblue;">REGISTRARSE</a>
-        <i class="material-icons right">input</i>
-      </button>
-      </div>
-    </div>
-  </div>
-</div>
-   
+                // // --- FUNCIONALIDAD DE VISIBILIDAD DE CONTRASEÑA ---
+                // const togglePassword = document.querySelector('.toggle-password');
+                // const passwordInput = document.querySelector('#passwordLog');
 
-</main>
+                // if (togglePassword && passwordInput) {
+                // togglePassword.addEventListener('click', function (e) {
+                //     const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                //     passwordInput.setAttribute('type', type);
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+                //     this.textContent = this.textContent === 'visibility' ? 'visibility_off' : 'visibility';
+                // });
+                // }
+                // ---------------------------------------------------
+            });
+        </script>
 
-  <script>
-    document.addEventListener('DOMContentLoaded',function(){
-      M.Slider.init(document.querySelectorAll('.slider'),{});
-      M.Modal.init(document.querySelectorAll('.modal'),{});
-    });
-  </script>
+        <footer class="page-footer blue darken-3">
+            <!-- <div class="container"> -->
+            <div class="row">
+                <div class="col l4 offset-l2 s12">
+                    <li><a class="grey-text text-lighten-3" href="./Contacto.html">Contáctenos</a></li>
+                    <li><a class="grey-text text-lighten-3" href="#!">Términos y Condiciones</a></li>
 
-<footer class="footer">
- © 2025 Designed by : Onix.dev
- <br>
- <a href="./Contacto.html"   style="text-decoration: none; color: antiquewhite;">contactenos!!</a>
-                     
-                   
-</footer>
- <script src="./config.js"></script>
-<script src="./script.js"></script>        
-</body>
+                </div>
+            </div>
+            <!-- </div> -->
+            <!-- <div class="footer-copyright"> -->
+            <div class="container">
+                © 2025 Designed by : Onix.dev
+
+            </div>
+            <!-- </div> -->
+        </footer>
+        <script src="./config.js"></script>
+        <script src="./script.js"></script>
+    </body>
 
 </html>

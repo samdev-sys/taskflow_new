@@ -40,3 +40,6 @@ Thumbs.db
 # Optional: evita accidentalmente subir el lockfile
 package-lock.json
 yarn.lock
+
+# Local Netlify folder
+.netlify
