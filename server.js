@@ -151,14 +151,18 @@ app.delete('/tasks/:id_tarea', (req, res) => req.db.remove(req.params.id_tarea, 
 
 //cargarurls
 app.post('/urls', (req, res) => {
-    const { url } = req.body;
+    const { url, user_id } = req.body;
+
+    if (!user_id) {
+        return res.status(400).json({ error: 'Usuario no encontrado' });
+    }
     if (!url || !/^https?:\/\/.+/i.test(url)) {
         return res.status(400).json({ error: 'URL inválida' });
     }
-    req.db.createUrl(url, (e, r) => res.json(r));
+    // req.db.createUrl(url, (e, r) => res.json(r));
 
-    const insertUrl = "INSERT INTO urls (url) VALUES (?)";
-    const values = [url];
+    const insertUrl = "INSERT INTO urls (url,user_id) VALUES (?,?)";
+    const values = [url, user_id];
     req.db.conexion.query(insertUrl, values, (e, r) => {
         if (e) {
             console.error(e);
@@ -168,6 +172,12 @@ app.post('/urls', (req, res) => {
     });
 });
 
+
+
+//cierre de sesion
+app.post('/logout', (req, res) => {
+    res.json({ success: true, message: 'Sesión cerrada correctamente' });
+});
 
 // Start the server
 // 4. FIX: Removed the extraneous closing bracket '}'

@@ -108,11 +108,17 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
         });
     }
-}
+});
 
 //cargar urls
-async function cargarUrls() {
+document.addEventListener("DOMContentLoaded", () => {
+    const btnCargarUrls = document.getElementById("btnCargarUrls");
+    if (btnCargarUrls) {
+        btnCargarUrls.addEventListener("click", () => cargarUrls());
+    }
+    async function cargarUrls() {
         const url = document.getElementById("urlInput")?.value.trim();
+        const user_id = localStorage.getItem('userId');
 
         if (!url || !/^https?:\/\/.+/i.test(url)) {
             alert("Introduce una URL válida que comience con http:// o https://");
@@ -123,7 +129,7 @@ async function cargarUrls() {
             const response = await fetch(`${BASE_URL}/urls`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ url })
+                body: JSON.stringify({ url: url, user_id: user_id })
             });
             const result = await response.json();
 
@@ -131,4 +137,5 @@ async function cargarUrls() {
             console.error("Error al cargar URLs:", err.message);
             alert("Error al cargar URLs: " + err.message);
         }
-    });
+    }
+});
