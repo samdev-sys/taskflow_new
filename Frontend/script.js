@@ -133,9 +133,89 @@ document.addEventListener("DOMContentLoaded", () => {
             });
             const result = await response.json();
 
+            if (response.ok) {
+                alert("URL guardada exitosamente");
+                document.getElementById("urlInput").value = "";
+                mostrarUrls(); // Recargar URLs después de guardar
+            } else {
+                alert("Error al guardar URL: " + (result.error || "Desconocido"));
+            }
         } catch (err) {
             console.error("Error al cargar URLs:", err.message);
             alert("Error al cargar URLs: " + err.message);
         }
+    }
+
+    // Función para mostrar URLs con iconos
+    async function mostrarUrls() {
+        const user_id = localStorage.getItem('userId');
+        const iconsContainer = document.getElementById("iconsContainer");
+
+        if (!iconsContainer) return;
+
+        try {
+            const response = await fetch(`${BASE_URL}/urls?user_id=${user_id}`);
+            const result = await response.json();
+
+            if (response.ok) {
+                iconsContainer.innerHTML = ""; // Limpiar contenedor
+
+                for (const item of result.urls) {
+                    const iconUrl = await obtenerIcono(item.url);
+                    const linkElement = document.createElement("a");
+                    linkElement.href = item.url;
+                    linkElement.target = "_blank";
+                    linkElement.className = "col s2"; // Materialize grid
+
+                    const imgElement = document.createElement("img");
+                    imgElement.src = iconUrl;
+                    imgElement.alt = "Icono";
+                    imgElement.style.width = "32px";
+                    imgElement.style.height = "32px";
+                    imgElement.onerror = () => {
+                        imgElement.src = "./img/default-icon.png"; // Icono por defecto si falla
+                    };
+
+                    linkElement.appendChild(imgElement);
+                    iconsContainer.appendChild(linkElement);
+                }
+            }
+        } catch (err) {
+            console.error("Error al mostrar URLs:", err.message);
+        }
+    }
+
+    // Función para obtener el icono de una URL
+    async function obtenerIcono(url) {
+        try {
+            const urlObj = new URL(url);
+            const faviconUrl = `${urlObj.protocol}//${urlObj.hostname}/favicon.ico`;
+            // Verificar si el favicon existe
+            const response = await fetch(faviconUrl, { method: 'HEAD' });
+            if (response.ok) {
+                return faviconUrl;
+            } else {
+                // Intentar obtener desde el HTML
+                const htmlResponse = await fetch(url);
+                const html = await htmlResponse.text();
+                const match = html.match(/<link[^>]*rel=["'](?:shortcut )?icon["'][^>]*href=["']([^"']+)["'][^>]*>/i);
+                if (match) {
+                    const iconPath = match[1];
+                    if (iconPath.startsWith('http')) {
+                        return iconPath;
+                    } else {
+                        return new URL(iconPath, url).href;
+                    }
+                }
+            }
+        } catch (err) {
+            console.error("Error obteniendo icono:", err);
+        }
+        return "./img/default-icon.png"; // Icono por defecto
+    }
+
+    // Cargar URLs al cargar la página
+    if (document.getElementById("iconsContainer")) {
+        mostrarUrls();
     }
 });

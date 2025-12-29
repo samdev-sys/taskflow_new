@@ -9,105 +9,92 @@
   <meta http-equiv="Expires" content="0">
   <title>taskFlow</title>
 
-  <!-- Estilos -->
-  <link rel="stylesheet" href="/styles.css" />
-  <link rel="shortcut icon" href="./img/ChatGPT Image 22 may 2025, 08_43_12 p.m_logo..png" type="image/x-icon" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="shortcut icon" href="./img/logo.png" type="image/x-icon" />
   <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
-
-  <style>
-    body {
-      background-image: url('./img/55448.png');
-      background-repeat: no-repeat;
-      background-size: cover;
-      font-family: sans-serif;
-      background-attachment: fixed;
-    }
-  </style>
 </head>
-
+<style>
+  body {
+    background-image:url(./img/Gemini_Generated_Image_n3tc9bn3tc9bn3tc.png);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+</style>
 <body data-private="true">
-
-  <!-- NAVBAR -->
   <nav>
-    <div class="nav-wrapper light- cyan darken-4">
-      <a href="#" class="brand-logo" style=" display: flex; justify-content: center;">taskFlow</a>
-      <ul id="nav-mobile" style="display: flex; justify-content: flex-end;">
+    <div class="nav-wrapper cyan darken-4">
+      <a href="#" class="brand-logo center">taskFlow</a>
+      <ul id="nav-mobile" class="right">
         <li>
-          <a href="/urls.html"><img src="./img/icons8-menú-cuadrado-96.png" alt="apps" height="65px"></a>
-        </li>
-        <li>
-          <img src="./img/icons8-salida.gif" height="65px" alt="left" onclick="abrirModal()">
-          <div id="confirmacionmodal" class="modal" style="border-radius: 10px; overflow: hidden;">
-            <div class="modal-content" style="background-color: #01579b; padding-bottom: 0;">
-              <h4 style="color: #fff;">¿Seguro que deseas cerrar sesión?</h4>
-              <p style="font-size: 18px; color: #bbdefb;">Si cierras sesión, tendrás que volver a ingresar tus
-                credenciales.</p>
+          <img src="./img/icons8-salida.gif" class="logout-icon" alt="logout" onclick="abrirModal()">
+          
+          <div id="confirmacionmodal" class="modal modal-logout">
+            <div class="modal-content logout-content">
+              <h4>¿Seguro que deseas cerrar sesión?</h4>
+              <p>Si cierras sesión, tendrás que volver a ingresar tus credenciales.</p>
             </div>
-            <div class="modal-footer" style="background-color: #01579b;">
-              <button class="btn" style="background-color: #006064; margin-right: 10px;" id="logoutBtn"
-                onclick="cerrarSesion()">Sí, cerrar sesión</button>
+            <div class="modal-footer logout-footer">
+              <button class="btn btn-confirm" id="logoutBtn" onclick="cerrarSesion()">Sí, cerrar sesión</button>
               <button class="btn grey darken-2" onclick="cerrarModal()">Cancelar</button>
             </div>
           </div>
         </li>
-
       </ul>
-
     </div>
   </nav>
-  <br>
-  <main class="main">
-    <br>
+  <main class="container-main">
+    <div class="actions-container">
+         <a class="waves-effect waves-light btn modal-trigger blue darken-4" href="#modal2">AGREGAR TAREA</a>
+    </div>
+    <div class="parent">     
+      <div class="div3">
+        <h2 class="txt">Actividades</h2>
 
-    <a class="btn cyan darken-1 modal-trigger   cyan lighten-1" style="border-radius: 8px;" href="#modalURL">Gestionar
-      URLs</a>
-
-    <div id="modalURL" class="modal">
-      <div class="modal-content2">
+    
+    <ul class="collapsible">
+      <li>
+        <div class="collapsible-header"><i class="material-icons cyan-text">hourglass_empty</i>En proceso</div>
+        <div class="collapsible-body"><div id="enproceso"></div></div>
+      </li>
+      <li>
+        <div class="collapsible-header"><i class="material-icons red-text">hourglass_full</i>Pendientes</div>
+        <div class="collapsible-body"><div id="por_iniciar"></div></div>
+      </li>
+      <li>
+        <div class="collapsible-header"><i class="material-icons teal-text">check</i>Finalizado</div>
+        <div class="collapsible-body"><div id="finalizado"></div></div>
+      </li>
+    </ul>
+</div>
+      <div class="div4">
         <h4>Introduce URLs para acceso rápido</h4>
-        <!-- Formulario -->
         <form id="urlForm" onsubmit="return false;">
           <label for="urlInput">Introduce una URL:</label>
           <input type="url" id="urlInput" required />
-          <button type="button" id="btnCargarUrls">Guardar URL</button>
+          <button type="button" id="btnCargarUrls" class="btn">Guardar URL</button>
         </form>
-
-        <!-- Contenedor de resultados -->
         <h4>Enlaces guardados</h4>
         <div id="iconsContainer" class="row"></div>
-
-
-      </div>
-
-
-    </div>
-
-    <!-- Botón para abrir modal de tareas -->
-    <a class="waves-effect waves-light btn modal-trigger blue darken-4" style="border-radius: 8px;"
-      href="#modal2">AGREGAR TAREA</a>
-
-    <!-- Modal de Agregar Tarea -->
+       
+</div>
+      
+    
     <div id="modal2" class="modal">
-      <div class="modal-content2" style="border-radius: 8px;">
-        <h1>Agregar Tarea </h1>
+      <div class="modal-content2">
+        <h1>Agregar Tarea</h1>
         <form id="taskForm">
           <label for="asunto" class="txt">Asunto</label>
           <input type="text" id="asunto" name="asunto" required>
-
-          <label for="archivo" style="color: rgb(36, 147, 147); font-family: Roboto Mono, monospace;">Adjuntar
-            archivos</label>
+          <br>
+          <label class="file-label" for="archivo">Adjuntar archivos</label>
           <input type="file" id="archivo" name="file">
           <br>
-          <br>
-          <label for="store_URL" style="color: rgb(36, 147, 147); font-family: Roboto Mono, monospace;">Adjuntar
-            URLs</label>
-          <input type="url" id="store_URL" name="url">
-
           <label for="descripcion" class="txt">Descripción</label>
-          <textarea id="descripcion" name="descripcion"></textarea>
-
-          <p>
+          <textarea id="descripcion" name="descripcion" class="materialize-textarea"></textarea>
+          <br>
+          <div class="radio-group">
             <label>
               <input name="Estado" type="radio" value="por_Iniciar" checked />
               <span>Pendientes</span>
@@ -120,61 +107,24 @@
               <input name="Estado" type="radio" value="finalizado" />
               <span>Finalizado</span>
             </label>
-          </p>
+          </div>
 
-          <button type="submit" class="btn blue darken-4" style="border-radius: 4px;">Enviar</button>
-
+          <button type="submit" class="btn blue darken-4">Enviar</button>
         </form>
       </div>
     </div>
-
   </main>
-  <h2 class="txt">Actividades</h2>
-  <div>
-    <ul class="collapsible">
-      <li>
-        <div class="collapsible-header"><i class="material-icons cyan-text">hourglass_empty</i>En proceso</div>
-        <div class="collapsible-body">
-          <div id="enproceso"></div>
-        </div>
-      </li>
-      <li>
-        <div class="collapsible-header"><i class="material-icons  red-text">hourglass_full</i>Pendientes</div>
-        <div class="collapsible-body">
-          <div id="por_iniciar"></div>
-        </div>
-      </li>
-      <li>
-        <div class="collapsible-header"><i class="material-icons teal-text">check</i>Finalizado</div>
-        <div class="collapsible-body">
-          <div id="finalizado"></div>
-        </div>
-      </li>
-    </ul>
-  </div>
 
+  
 
-
-  <!-- SCRIPTS -->
-  <!-- <script src="/config.js"></script> -->
   <script src="logout.js"></script>
   <script src="script.js" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', function () {
-      var elems = document.querySelectorAll('.modal');
-      var instances = M.Modal.init(elems);
-    });
-    document.addEventListener('DOMContentLoaded', function () {
-      var elems = document.querySelectorAll('.collapsible');
-      var instances = M.Collapsible.init(elems, {
-        accordion: true
-      });
+      M.Modal.init(document.querySelectorAll('.modal'));
+      M.Collapsible.init(document.querySelectorAll('.collapsible'), { accordion: true });
     });
   </script>
-
-
-
 </body>
-
 </html>

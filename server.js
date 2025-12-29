@@ -172,6 +172,24 @@ app.post('/urls', (req, res) => {
     });
 });
 
+// Obtener URLs del usuario
+app.get('/urls', (req, res) => {
+    const user_id = req.query.user_id;
+
+    if (!user_id) {
+        return res.status(400).json({ error: 'Usuario no encontrado' });
+    }
+
+    const selectUrls = "SELECT id, url FROM urls WHERE user_id = ?";
+    req.db.conexion.query(selectUrls, [user_id], (e, r) => {
+        if (e) {
+            console.error(e);
+            return res.status(500).json({ error: e.message });
+        }
+        res.status(200).json({ urls: r });
+    });
+});
+
 
 
 //cierre de sesion
