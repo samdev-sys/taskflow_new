@@ -108,7 +108,16 @@ app.delete('/register/:user_id', (req, res) => req.db.remove(req.params.user_id,
 // CRUD for tasks
 
 // GET: Read all tasks
-app.get('/tasks', (req, res) => req.db.getAll((e, r) => res.json(r)));
+app.get('/tasks/:user_id', (req, res) => {
+    const userId = req.params;
+
+    const sql = "SELECT id_tarea,asunto, descripcion,estado AS Estado FROM tasks WHERE user_id = ? ORDER BY fecha_de_creacion DESC ";
+    db.query(sql, [userId], (e, r) => {
+        if (e) return res.status(500).json({ message: 'error al obtener tareas' });
+        res.json(r);
+    });
+
+});
 
 // POST: Create a new task
 app.post('/tasks', (req, res) => {
@@ -117,7 +126,6 @@ app.post('/tasks', (req, res) => {
         user,
         asunto,
         descripcion,
-        store_Url, // Frontend sends "storeUrl"
         tipo_archivo,
         estado,
         fecha_de_creacion,
@@ -131,7 +139,7 @@ app.post('/tasks', (req, res) => {
 
     const sql = "INSERT INTO tasks (user, asunto, descripcion, store_URL, tipo_archivo, estado, fecha_de_creacion, user_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
     // Use storeUrl (destructured variable)
-    const values = [user, asunto, descripcion, store_Url || "", tipo_archivo || "", estado, fecha_de_creacion, user_id];
+    const values = [user, asunto, descripcion, "", tipo_archivo || "", estado, fecha_de_creacion, user_id];
     // Fix: Access the connection object via req.db.conexion
     req.db.conexion.query(sql, values, (e, r) => {
         if (e) {

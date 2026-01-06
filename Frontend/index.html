@@ -73,7 +73,7 @@
             <ul class="sidenav" id="mobile-demo">
                 <li>
                     <div class="user-view">
-                        <div class="background" style="background-color: rgb(236, 245, 244);">
+                        <div>
                             <img src="./img/ChatGPT Image 22 may 2025, 08_43_12 p.m_logo..png" alt="Fondo de menú"
                                 style="width: 25%;">
                         </div>
@@ -97,61 +97,59 @@
             </ul>
 
 
-            <div id="modal1" class="modal"
-                style="background-color: rgb(7, 51, 51); border: 2px solid azure; border-radius: 8px;">
-                <div class="modal-content white-text">
-                    <div class="center-align">
-                        <div style="display: flex; justify-content: center; align-items: center; margin-bottom: 1rem;">
-                            <i class="material-icons large indigo-text text-lighten-2"
-                                style="font-size: 32px;">check_circle</i>
-                            <span style="font-size: 24px; font-weight: 500; color: #E0E0E0;">taskFlow</span>
-                        </div>
-
-                        <h4 style="font-weight: 500; margin-top: 0; margin-bottom: 0.5rem;">Iniciar Sesión</h4>
-                        <p class="grey-text text-lighten-3" style="margin-bottom: 2rem;">Continúa para acceder a tu
-                            cuenta</p>
+            <div id="modal1" class="modal" style="border: 2px solid azure; border-radius: 8px;"">
+                <div class=" modal-content white-text">
+                <div class="center-align">
+                    <div style="display: flex; justify-content: center; align-items: center; margin-bottom: 1rem;">
+                        <i class="material-icons large indigo-text text-lighten-2"
+                            style="font-size: 32px;">check_circle</i>
+                        <span style="font-size: 24px; font-weight: 500; color: #E0E0E0;">taskFlow</span>
                     </div>
 
-                    <form class="col s12" id="loginForm">
-                        <div class="row">
-                            <div class="input-field col s12">
-                                <i class="material-icons prefix">account_circle</i>
-                                <input id="usernameLog" type="text" class="validate white-text">
-                                <label for="usernameLog" class="white-text">User</label>
-                            </div>
-
-                            <div class="input-field col s12">
-                                <i class="material-icons prefix">lock</i>
-                                <input id="passwordLog" type="password" class="validate white-text"
-                                    autocomplete="current-password">
-                                <label for="passwordLog" class="white-text">Contraseña</label>
-                                <i class="material-icons suffix toggle-password"
-                                    style="cursor: pointer;">visibility_off</i>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col s12 right-align" style="margin-top: -15px;">
-                                <a href="./recupera.html" class="teal-text text-lighten-2"
-                                    style="font-size: 0.875rem; font-weight: 500;">¿Olvidaste tu contraseña?</a>
-                            </div>
-                        </div>
-
-                        <button id="btn_inicioSesion"
-                            class="btn btn-large waves-effect waves-light indigo darken-2 z-depth-1" type="submit"
-                            style="width: 100%; margin-top: 1.5rem; border-radius: 8px;">
-                            Iniciar
-                        </button>
-
-                        <div class="center-align" style="margin-top: 1.5rem;">
-                            <p class="grey-text text-lighten-3" style="font-size: 0.875rem;">
-                                ¿No tienes una cuenta? <a href="./Register.html"
-                                    class="teal-text text-lighten-2">Registrarse</a>
-                            </p>
-                        </div>
-
-                    </form>
+                    <h4 style="font-weight: 500; margin-top: 0; margin-bottom: 0.5rem;">Iniciar Sesión</h4>
+                    <p class="grey-text text-lighten-3" style="margin-bottom: 2rem;">Continúa para acceder a tu
+                        cuenta</p>
                 </div>
+
+                <form class="col s12" id="loginForm">
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <i class="material-icons prefix">account_circle</i>
+                            <input id="usernameLog" type="text" class="validate white-text">
+                            <label for="usernameLog" class="white-text">User</label>
+                        </div>
+
+                        <div class="input-field col s12">
+                            <i class="material-icons prefix">lock</i>
+                            <input id="passwordLog" type="password" class="validate white-text"
+                                autocomplete="current-password">
+                            <label for="passwordLog" class="white-text">Contraseña</label>
+                            <i class="material-icons suffix toggle-password" style="cursor: pointer;">visibility_off</i>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col s12 right-align" style="margin-top: -15px;">
+                            <a href="./recupera.html" class="teal-text text-lighten-2"
+                                style="font-size: 0.875rem; font-weight: 500;">¿Olvidaste tu contraseña?</a>
+                        </div>
+                    </div>
+
+                    <button id="btn_inicioSesion"
+                        class="btn btn-large waves-effect waves-light indigo darken-2 z-depth-1" type="submit"
+                        style="width: 100%; margin-top: 1.5rem; border-radius: 8px;">
+                        Iniciar
+                    </button>
+
+                    <div class="center-align" style="margin-top: 1.5rem;">
+                        <p class="grey-text text-lighten-3" style="font-size: 0.875rem;">
+                            ¿No tienes una cuenta? <a href="./Register.html"
+                                class="teal-text text-lighten-2">Registrarse</a>
+                        </p>
+                    </div>
+
+                </form>
+            </div>
 
 
 
@@ -217,19 +215,7 @@
                 M.Modal.init(document.querySelectorAll('.modal'), {});
                 M.Sidenav.init(document.querySelectorAll('.sidenav'), {}); // Inicializa el Sidenav
 
-                // // --- FUNCIONALIDAD DE VISIBILIDAD DE CONTRASEÑA ---
-                // const togglePassword = document.querySelector('.toggle-password');
-                // const passwordInput = document.querySelector('#passwordLog');
 
-                // if (togglePassword && passwordInput) {
-                // togglePassword.addEventListener('click', function (e) {
-                //     const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-                //     passwordInput.setAttribute('type', type);
-
-                //     this.textContent = this.textContent === 'visibility' ? 'visibility_off' : 'visibility';
-                // });
-                // }
-                // ---------------------------------------------------
             });
         </script>
 

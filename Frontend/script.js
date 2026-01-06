@@ -65,7 +65,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             const asunto = document.getElementById("asunto");
             const descripcion = document.getElementById("descripcion");
-            const storeUrl = document.getElementById("store_URL"); // Fixed ID
             const tipo_archivo = document.getElementById("archivo"); // Fixed ID
             const estadoElement = document.querySelector('input[name="Estado"]:checked'); // Fixed Radio Button
             const estado = estadoElement ? estadoElement.value : "por_Iniciar";
@@ -83,7 +82,6 @@ document.addEventListener("DOMContentLoaded", async () => {
                         user: user,
                         asunto: asunto.value,
                         descripcion: descripcion.value,
-                        store_Url: storeUrl ? storeUrl.value : "",
                         tipo_archivo: tipo_archivo ? tipo_archivo.value : "",
                         estado: estado,
                         fecha_de_creacion: fechaDeCreacion,
@@ -113,12 +111,19 @@ document.addEventListener("DOMContentLoaded", async () => {
 //cargar urls
 document.addEventListener("DOMContentLoaded", () => {
     const btnCargarUrls = document.getElementById("btnCargarUrls");
+    mostrarUrls();
     if (btnCargarUrls) {
         btnCargarUrls.addEventListener("click", () => cargarUrls());
     }
     async function cargarUrls() {
-        const url = document.getElementById("urlInput")?.value.trim();
+        const urlInput = document.getElementById("urlInput")
+        const url = urlInput?.value.trim();;
         const user_id = localStorage.getItem('userId');
+
+        if (!user_id) {
+            alert("No se encontro un usuario");
+            return;
+        }
 
         if (!url || !/^https?:\/\/.+/i.test(url)) {
             alert("Introduce una URL válida que comience con http:// o https://");
@@ -129,15 +134,16 @@ document.addEventListener("DOMContentLoaded", () => {
             const response = await fetch(`${BASE_URL}/urls`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ url: url, user_id: user_id })
+                body: JSON.stringify({ url, user_id })
             });
             const result = await response.json();
 
             if (response.ok) {
                 alert("URL guardada exitosamente");
-                document.getElementById("urlInput").value = "";
+                urlInput.value = "";
                 mostrarUrls(); // Recargar URLs después de guardar
             } else {
+                const result = await response.json();
                 alert("Error al guardar URL: " + (result.error || "Desconocido"));
             }
         } catch (err) {
@@ -151,71 +157,119 @@ document.addEventListener("DOMContentLoaded", () => {
         const user_id = localStorage.getItem('userId');
         const iconsContainer = document.getElementById("iconsContainer");
 
-        if (!iconsContainer) return;
+        if (!iconsContainer || !user_id) return;
 
         try {
             const response = await fetch(`${BASE_URL}/urls?user_id=${user_id}`);
             const result = await response.json();
 
-            if (response.ok) {
+            if (response.ok && result.urls) {
                 iconsContainer.innerHTML = ""; // Limpiar contenedor
+                const fragment = document.createDocumentFragment();
 
-                for (const item of result.urls) {
-                    const iconUrl = await obtenerIcono(item.url);
+                result.urls.forEach(item => {
+                    const iconUrl = obtenerIcono(item.url);
+
                     const linkElement = document.createElement("a");
                     linkElement.href = item.url;
                     linkElement.target = "_blank";
-                    linkElement.className = "col s2"; // Materialize grid
+                    linkElement.className = "tooltipped col s2 center-align";
+                    linkElement.setAttribute('data-position', 'bottom');
+                    linkElement.setAttribute('data-tooltip', item.url);
 
                     const imgElement = document.createElement("img");
                     imgElement.src = iconUrl;
-                    imgElement.alt = "Icono";
-                    imgElement.style.width = "32px";
-                    imgElement.style.height = "32px";
-                    imgElement.onerror = () => {
-                        imgElement.src = "./img/default-icon.png"; // Icono por defecto si falla
-                    };
+                    imgElement.className = "responsive-img circle hoverable";
+                    imgElement.style.width = "40px";
+                    imgElement.style.padding = "5px";
+
+                    imgElement.onerror = () => { imgElement.src = "./img/default-icon.png"; };
 
                     linkElement.appendChild(imgElement);
-                    iconsContainer.appendChild(linkElement);
+                    fragment.appendChild(linkElement);
+                });
+
+                iconsContainer.appendChild(fragment);
+
+                // Inicialización de Materialize
+                if (typeof M !== 'undefined') {
+                    M.Tooltip.init(document.querySelectorAll('.tooltipped'));
                 }
             }
         } catch (err) {
-            console.error("Error al mostrar URLs:", err.message);
+            console.error("Error al mostrar URLs:", err);
         }
     }
-
-    // Función para obtener el icono de una URL
-    async function obtenerIcono(url) {
+    // Función optimizada para obtener el icono de una URL
+    function obtenerIcono(url) {
         try {
             const urlObj = new URL(url);
-            const faviconUrl = `${urlObj.protocol}//${urlObj.hostname}/favicon.ico`;
-            // Verificar si el favicon existe
-            const response = await fetch(faviconUrl, { method: 'HEAD' });
-            if (response.ok) {
-                return faviconUrl;
-            } else {
-                // Intentar obtener desde el HTML
-                const htmlResponse = await fetch(url);
-                const html = await htmlResponse.text();
-                const match = html.match(/<link[^>]*rel=["'](?:shortcut )?icon["'][^>]*href=["']([^"']+)["'][^>]*>/i);
-                if (match) {
-                    const iconPath = match[1];
-                    if (iconPath.startsWith('http')) {
-                        return iconPath;
-                    } else {
-                        return new URL(iconPath, url).href;
-                    }
-                }
-            }
+            // Usamos el servicio de Google para obtener favicons (sz=64 es el tamaño)
+            return `https://icons.duckduckgo.com/ip3/${urlObj.hostname}.ico`;
         } catch (err) {
-            console.error("Error obteniendo icono:", err);
+            console.error("URL inválida:", url);
+            return "./img/default-icon.png"; // Icono por defecto si la URL está mal
         }
-        return "./img/default-icon.png"; // Icono por defecto
-    }
-
-    // Cargar URLs al cargar la página
-    if (document.getElementById("iconsContainer")) {
-        mostrarUrls();
     }
 });
+
+
+//ver tareas
+async function displayTasks() {
+    try {
+        const response = await fetch(`${BASE_URL}/tasks`);
+        const result = await response.json();
+        console.log(result);
+
+        const enproceso = document.getElementById("enproceso");
+        const por_iniciar = document.getElementById("por_iniciar");
+        const finalizado = document.getElementById("finalizado");
+
+        if (!enproceso || !por_iniciar || !finalizado) {
+            console.warn("No se encontraron elementos con los ids especificados");
+            return;
+        }
+        enproceso.innerHTML = "";
+        por_iniciar.innerHTML = "";
+        finalizado.innerHTML = "";
+        tasks.forEach(({ id_tarea, asunto, descripcion, Estado }) => {
+            const card = document.createElement("div");
+            let cardClass = "card-panel";
+            const estado = Estado?.toLowerCase() || "por_iniciar" || "pendiente" || "finalizado";
+            if (estado === "en_proceso") {
+                cardClass += " blue lighten-4";
+            }
+            else if (estado === "pendiente") {
+                cardClass += " yellow lighten-4 black-text";
+            } else if (estado === "finalizado") {
+                cardClass += " green lighten-4 black text";
+            } else {
+                cardClass += " grey lighten-4 black-text";
+            }
+
+            card.className = cardClass;
+            card.innerHTML = `
+        <strong>${asunto}</strong><br>
+        <span>${descripcion}</span><br>
+        <button class="btn-small yellow black-text" onclick="actualizarTarea(${id_tarea})">
+    <i class="material-icons">edit</i>
+  </button>
+  <button class="btn-small red darken-1 white-text" onclick="eliminarTarea(${id_tarea})">
+    <i class="material-icons">delete</i>
+  </button>
+      `;
+
+
+            if (["en proceso ", "en_proceso"].includes(estado)) {
+                enproceso.appendChild(card);
+            } else if (["pendiente", "por_iniciar"].includes(estado)) {
+                pendientes.appendChild(card);
+            } else if (estado === "finalizado") {
+                finalizado.appendChild(card);
+            }
+        });
+
+    } catch (error) {
+        console.error(error);
+    }
+} 
