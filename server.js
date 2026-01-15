@@ -23,28 +23,7 @@ app.use((req, res, next) => {
     if (!req.db) return res.status(400).json({ error: 'base de datos invalida' });
     next();
 });
-//CRUD for login
-//ingreso
-// app.post('/login', (req, res) => {
 
-//     if (!req.body || !req.body.user) {
-//         return res.status(400).json({ error: 'credenciales invalidas' });
-//     }
-//     const { user, password } = req.body;
-
-//     req.db.findUser(user, (error, user) => {
-//         if (error || !user) {
-//             return res.status(401).json({
-//                 error: 'credenciales invalidas'
-//             });
-//         } else {
-//             return res.json({
-//                 message: 'sesion iniciada'
-//             })
-
-//         }
-//     })
-// });
 
 
 app.post('/login', (req, res) => {
@@ -108,17 +87,24 @@ app.delete('/register/:user_id', (req, res) => req.db.remove(req.params.user_id,
 // CRUD for tasks
 
 // GET: Read all tasks
-app.get('/tasks/:user_id', (req, res) => {
-    const userId = req.params;
+// GET: Read all tasks for a specific user
+app.get('/tasks', (req, res) => {
+    const user_id = req.query.user_id;
 
-    const sql = "SELECT id_tarea,asunto, descripcion,estado AS Estado FROM tasks WHERE user_id = ? ORDER BY fecha_de_creacion DESC ";
-    db.query(sql, [userId], (e, r) => {
-        if (e) return res.status(500).json({ message: 'error al obtener tareas' });
+    if (!user_id) {
+        return res.status(400).json({ error: 'Usuario no encontrado' });
+    }
+
+    const sql = "SELECT id_tarea, asunto, descripcion, estado AS Estado FROM tasks WHERE user_id = ? ORDER BY fecha_de_creacion DESC";
+
+    req.db.conexion.query(sql, [user_id], (e, r) => {
+        if (e) {
+            console.error(e);
+            return res.status(500).json({ message: 'Error al obtener tareas' });
+        }
         res.json(r);
     });
-
 });
-
 // POST: Create a new task
 app.post('/tasks', (req, res) => {
     // Destructure using the names sent by the frontend
@@ -132,14 +118,14 @@ app.post('/tasks', (req, res) => {
         user_id
     } = req.body;
     //validacion Estados
-    const estadosValidos = ['por_Iniciar', 'en_proceso', 'finalizado'];
+    const estadosValidos = ['por iniciar', 'En proceso', 'Finalizado'];
     if (!estadosValidos.includes(estado)) {
         return res.status(400).json({ error: 'estado invalido' });
     }
 
-    const sql = "INSERT INTO tasks (user, asunto, descripcion, store_URL, tipo_archivo, estado, fecha_de_creacion, user_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    const sql = "INSERT INTO tasks (user, asunto, descripcion, tipo_archivo, estado, fecha_de_creacion, user_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
     // Use storeUrl (destructured variable)
-    const values = [user, asunto, descripcion, "", tipo_archivo || "", estado, fecha_de_creacion, user_id];
+    const values = [user, asunto, descripcion, tipo_archivo || "", estado, fecha_de_creacion || new Date().toISOString().slice(0, 19).replace('T', ' '), user_id];
     // Fix: Access the connection object via req.db.conexion
     req.db.conexion.query(sql, values, (e, r) => {
         if (e) {
@@ -159,7 +145,7 @@ app.delete('/tasks/:id_tarea', (req, res) => req.db.remove(req.params.id_tarea, 
 
 //cargarurls
 app.post('/urls', (req, res) => {
-    const { url, user_id } = req.body;
+    const { url, nombre_url, user_id } = req.body;
 
     if (!user_id) {
         return res.status(400).json({ error: 'Usuario no encontrado' });
@@ -169,8 +155,8 @@ app.post('/urls', (req, res) => {
     }
     // req.db.createUrl(url, (e, r) => res.json(r));
 
-    const insertUrl = "INSERT INTO urls (url,user_id) VALUES (?,?)";
-    const values = [url, user_id];
+    const insertUrl = "INSERT INTO urls (url,Nombre_Url,user_id) VALUES (?,?,?)";
+    const values = [url, nombre_url, user_id];
     req.db.conexion.query(insertUrl, values, (e, r) => {
         if (e) {
             console.error(e);

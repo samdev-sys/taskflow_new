@@ -1,6 +1,6 @@
 /* --- 1. IMPORTACIÓN DE FUENTES OPTIMIZADA --- */
 /* Solo Poppins para títulos y JetBrains Mono para un toque técnico */
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Poppins:wght@300;400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Nunito:wght@300;400;600;700&family=Poppins:wght@300;400;600&display=swap');
 
 /* --- 2. VARIABLES Y COLORES --- */
 :root {
@@ -19,6 +19,7 @@
     /* Fuentes */
     --font-main: 'Poppins', sans-serif;
     --font-mono: 'JetBrains Mono', monospace;
+    --font-nunito: 'Nunito', sans-serif;
 }
 
 /* --- 3. RESET Y DISEÑO GENERAL --- */
@@ -85,13 +86,13 @@ body {
 .modal {
     border-radius: 24px !important;
     max-width: 600px;
-    background-color: rgba(22, 71, 73, 0.95) !important;
+    background-color: rgba(123, 182, 184, 0.95) !important;
     backdrop-filter: blur(10px);
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2) !important;
 }
 
 .modal-content {
-    padding: 30px !important;
+    padding: 20px !important;
 }
 
 .modal-content h4 {
@@ -114,4 +115,31 @@ body {
 
 .input-field input[type=text]:focus+label {
     color: var(--primary-color) !important;
+}
+
+.modal-content1 {
+    padding: 40px 24px !important;
+    background-color: #ffffff !important;
+    border-radius: 10px;
+}
+
+.modal-content1 h4 {
+    margin-top: 0;
+    margin-bottom: 30px;
+    font-size: 1.5rem;
+    color: var(--primary-color);
+    text-align: center;
+    font-weight: 600;
+}
+
+.txt {
+    font-family: var(--font-main);
+    color: black;
+}
+
+.h1 {
+    font-family: var(--font-mono);
+    color: var(--color3);
+    font-weight: 700;
+    text-align: center;
 }

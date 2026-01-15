@@ -26,6 +26,7 @@
 <body data-private="true">
   <nav>
     <div class="nav-wrapper cyan darken-4">
+      <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
       <a href="#" class="brand-logo center">taskFlow</a>
       <ul id="nav-mobile" class="right">
         <li>
@@ -44,14 +45,35 @@
         </li>
       </ul>
     </div>
+    <ul id="slide-out" class="sidenav">
+      <li>
+        <div class="user-view">
+          <div class="background">
+            <img src="images/office.jpg">
+          </div>
+          <a href="#user"><img class="circle" src="images/yuna.jpg"></a>
+          <a href="#name"><span class="white-text name">John Doe</span></a>
+          <a href="#email"><span class="white-text email">jdandturk@gmail.com</span></a>
+        </div>
+      </li>
+      <li><a href="#!"><i class="material-icons">cloud</i>First Link With Icon</a></li>
+      <li><a href="#!">Second Link</a></li>
+      <li>
+        <div class="divider"></div>
+      </li>
+      <li><a class="subheader">Subheader</a></li>
+      <li><a class="waves-effect" href="#!">Third Link With Waves</a></li>
+    </ul>
+
+
+
   </nav>
+
   <main class="container-main">
-    <div class="actions-container">
-      <a class="waves-effect waves-light btn modal-trigger blue darken-4" href="#modal2">AGREGAR TAREA</a>
-    </div>
+
     <div class="parent">
       <div class="div3">
-        <h2 class="txt">Actividades</h2>
+        <h2 style="font-family:var(--font-nunito);">ACTIVIDADES</h2>
 
 
         <ul class="collapsible">
@@ -76,20 +98,13 @@
         </ul>
       </div>
       <div class="div4">
-        <h4>Introduce URLs para acceso rápido</h4>
-        <form id="urlForm" onsubmit="return false;">
-          <label for="urlInput">Introduce una URL:</label>
-          <input type="url" id="urlInput" required />
-          <label for="urlInput">Nombre:</label>
-          <input type="text" id="urlInput" required />
-          <button type="button" id="btnCargarUrls" class="btn">Guardar URL</button>
-        </form>
+
         <h4>Iconos de Acceso Rapido</h4>
         <div id="iconsContainer" class="row"></div>
       </div>
       <div id="modal2" class="modal">
         <div class="modal-content2">
-          <h1 style="font-family:var(--font-mono);">Agregar Tarea</h1>
+          <h1 style="font-family:var(--font-nunito);">Agregar Tarea</h1>
           <form id="taskForm">
             <label for="asunto" class="txt">Asunto</label>
             <input type="text" id="asunto" name="asunto" required>
@@ -102,15 +117,15 @@
             <br>
             <div class="radio-group">
               <label>
-                <input name="Estado" type="radio" value="por_Iniciar" checked />
+                <input name="Estado" type="radio" value="por iniciar" checked />
                 <span>Pendientes</span>
               </label>
               <label>
-                <input name="Estado" type="radio" value="en_proceso" />
+                <input name="Estado" type="radio" value="En proceso" />
                 <span>En proceso</span>
               </label>
               <label>
-                <input name="Estado" type="radio" value="finalizado" />
+                <input name="Estado" type="radio" value="Finalizado" />
                 <span>Finalizado</span>
               </label>
             </div>
@@ -120,10 +135,36 @@
         </div>
       </div>
       <div class="div5">
-        <h2>Grupos de trabajo</h2>
+        <h2 style="font-family:var(--font-nunito);">TeamWorks</h2>
       </div>
     </div>
+    <div class="fixed-action-btn">
+      <a class="btn-floating btn-large red">
+        <i class="large material-icons">mode_edit</i>
+      </a>
+      <ul>
+        <li><a class="btn-floating red modal-trigger" href="#modal2"><i class="material-icons">insert_chart</i></a></li>
+        </li>
+        <li><a class="btn-floating yellow darken-1"><i class="material-icons">format_quote</i></a></li>
+        <li><a class="btn-floating green"><i class="material-icons">publish</i></a></li>
+        <li><a class="btn-floating blue modal-trigger" href="#modal1"><i class="material-icons">attach_file</i></a></li>
+      </ul>
+    </div>
+
   </main>
+
+  <div id="modal1" class="modal">
+    <div class="modal-content1">
+      <h4>Introduce URLs para acceso rápido</h4>
+      <form id="urlForm" onsubmit="return false;">
+        <label for="urlInput">Introduce una URL:</label>
+        <input type="url" id="urlInput" required />
+        <label for="urlInput">Nombre:</label>
+        <input type="text" id="nombre_url" required />
+        <button type="button" id="btnCargarUrls" class="btn">Guardar URL</button>
+      </form>
+    </div>
+  </div>
 
 
 
@@ -134,10 +175,8 @@
     document.addEventListener('DOMContentLoaded', function () {
       M.Modal.init(document.querySelectorAll('.modal'));
       M.Collapsible.init(document.querySelectorAll('.collapsible'), { accordion: true });
-    });
-    document.addEventListener('DOMContentLoaded', function () {
-      var elems = document.querySelectorAll('.modal');
-      var instances = M.Modal.init(elems);
+      M.FloatingActionButton.init(document.querySelectorAll('.fixed-action-btn'));
+      M.Sidenav.init(document.querySelectorAll('.sidenav'));
     });
   </script>
 </body>

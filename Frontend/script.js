@@ -66,8 +66,8 @@ document.addEventListener("DOMContentLoaded", async () => {
             const asunto = document.getElementById("asunto");
             const descripcion = document.getElementById("descripcion");
             const tipo_archivo = document.getElementById("archivo"); // Fixed ID
-            const estadoElement = document.querySelector('input[name="Estado"]:checked'); // Fixed Radio Button
-            const estado = estadoElement ? estadoElement.value : "por_Iniciar";
+            const Estado = document.querySelector('input[name="Estado"]:checked'); // Fixed Radio Button
+
 
             const fechaDeCreacion = new Date().toISOString().slice(0, 10).replace("T", "");
 
@@ -83,7 +83,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                         asunto: asunto.value,
                         descripcion: descripcion.value,
                         tipo_archivo: tipo_archivo ? tipo_archivo.value : "",
-                        estado: estado,
+                        estado: Estado.value,
                         fecha_de_creacion: fechaDeCreacion,
                         user_id: user_id
                     })
@@ -119,6 +119,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const urlInput = document.getElementById("urlInput")
         const url = urlInput?.value.trim();;
         const user_id = localStorage.getItem('userId');
+        const nombre_url = document.getElementById("nombre_url").value.trim();
 
         if (!user_id) {
             alert("No se encontro un usuario");
@@ -134,7 +135,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const response = await fetch(`${BASE_URL}/urls`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ url, user_id })
+                body: JSON.stringify({ url, nombre_url, user_id })
             });
             const result = await response.json();
 
@@ -215,34 +216,48 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 //ver tareas
+//ver tareas
 async function displayTasks() {
     try {
-        const response = await fetch(`${BASE_URL}/tasks`);
-        const result = await response.json();
-        console.log(result);
+        const user_id = localStorage.getItem('userId');
+        if (!user_id) {
+            console.warn("No hay usuario logueado");
+            return;
+        }
+
+        const response = await fetch(`${BASE_URL}/tasks?user_id=${user_id}`);
+        const tasks = await response.json(); // Fix: assign response to tasks
+        console.log("tareas recibidas del backend", tasks);
 
         const enproceso = document.getElementById("enproceso");
         const por_iniciar = document.getElementById("por_iniciar");
         const finalizado = document.getElementById("finalizado");
 
         if (!enproceso || !por_iniciar || !finalizado) {
-            console.warn("No se encontraron elementos con los ids especificados");
+            // Only warn if elements are missing (we might be on a page without them)
             return;
         }
         enproceso.innerHTML = "";
         por_iniciar.innerHTML = "";
         finalizado.innerHTML = "";
-        tasks.forEach(({ id_tarea, asunto, descripcion, Estado }) => {
+
+        tasks.forEach((task) => {
+            const { id_tarea, asunto, descripcion } = task;
+            const Estado = task.Estado || task.estado;
+
             const card = document.createElement("div");
             let cardClass = "card-panel";
-            const estado = Estado?.toLowerCase() || "por_iniciar" || "pendiente" || "finalizado";
-            if (estado === "en_proceso") {
+            // Normalize for styling checks, but use exact values for logic if possible, 
+            // or just checking against the known DB values.
+            const estadoDB = Estado || "por iniciar";
+
+            if (estadoDB === "En proceso") {
                 cardClass += " blue lighten-4";
             }
-            else if (estado === "pendiente") {
+            else if (estadoDB === "por iniciar") {
                 cardClass += " yellow lighten-4 black-text";
-            } else if (estado === "finalizado") {
-                cardClass += " green lighten-4 black text";
+            } else if (estadoDB === "Finalizado") {
+                cardClass += " green lighten-4 black-text";
             } else {
                 cardClass += " grey lighten-4 black-text";
             }
@@ -252,24 +267,30 @@ async function displayTasks() {
         <strong>${asunto}</strong><br>
         <span>${descripcion}</span><br>
         <button class="btn-small yellow black-text" onclick="actualizarTarea(${id_tarea})">
-    <i class="material-icons">edit</i>
-  </button>
-  <button class="btn-small red darken-1 white-text" onclick="eliminarTarea(${id_tarea})">
-    <i class="material-icons">delete</i>
-  </button>
+            <i class="material-icons">edit</i>
+        </button>
+        <button class="btn-small red darken-1 white-text" onclick="eliminarTarea(${id_tarea})">
+            <i class="material-icons">delete</i>
+        </button>
       `;
 
-
-            if (["en proceso ", "en_proceso"].includes(estado)) {
+            if (estadoDB === "En proceso") {
                 enproceso.appendChild(card);
-            } else if (["pendiente", "por_iniciar"].includes(estado)) {
-                pendientes.appendChild(card);
-            } else if (estado === "finalizado") {
+            } else if (estadoDB === "por iniciar") {
+                por_iniciar.appendChild(card);
+            } else if (estadoDB === "Finalizado") {
                 finalizado.appendChild(card);
             }
         });
 
     } catch (error) {
-        console.error(error);
+        console.error("Error al mostrar tareas:", error);
     }
-} 
+}
+
+// Ensure displayTasks runs if the relevant elements exist
+document.addEventListener("DOMContentLoaded", () => {
+    if (document.getElementById("enproceso")) {
+        displayTasks();
+    }
+}); 
